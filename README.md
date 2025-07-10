@@ -31,7 +31,12 @@ A Product Query Bot built with RAG (Retrieval-Augmented Generation) pipeline and
 
 ## 🚀 Quick Start with Docker
 
+## Sample Image
+![product_query_bot](app_screenshot.png)
+
+
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/yourusername/product-query-bot.git
 cd product-query-bot
+
