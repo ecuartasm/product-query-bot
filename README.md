@@ -72,4 +72,43 @@ A Product Query Bot built with RAG (Retrieval-Augmented Generation) pipeline and
 ```bash
 git clone https://github.com/yourusername/product-query-bot.git
 cd product-query-bot
+```
+
+
+## 🔄 **Complete Execution Flow**
+
+### **Step 1: User Request**
+```json
+POST /web-query
+{"user_id": "user123", "query": "waterproof jacket for skiing"}
+```
+
+### **Step 2: Input Validation** (Lines 120-124)
+- Pydantic validates JSON structure
+- Checks user_id and query are not empty
+
+### **Step 3: Multi-Agent Processing** (Lines 686-710)
+- **Retriever Agent** (Lines 641-650):
+  - Converts query to embeddings
+  - Searches vector database
+  - Returns top-k similar documents
+- **Responder Agent** (Lines 651-685):
+  - Receives retrieved documents
+  - Generates grounded answer
+  - Calculates confidence score
+
+### **Step 4: Response** 
+```json
+{
+  "success": true,
+  "result": {
+    "user_id": "user123",
+    "query": "waterproof jacket for skiing",
+    "answer": "Based on our product catalog: Our new TEK O2 technology makes our four-season waterproof pants even more breathable...",
+    "sources": [{"id": 4, "name": "EcoFlex 3L Storm Pants", "relevance": 0.85}],
+    "confidence": "high",
+    "timestamp": "2024-01-15T14:30:25"
+  }
+}
+```
 
