@@ -64,22 +64,11 @@ A Product Query Bot built with RAG (Retrieval-Augmented Generation) pipeline and
 ### Enjoy!
 
 
-## Sample Image
-![product_query_bot](app_screenshot.png)
-
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/yourusername/product-query-bot.git
-cd product-query-bot
-```
-
-
 ## 🔄 **Complete Execution Flow**
 
 ### **Step 1: User Request**
 ```json
-POST /web-query
+# POST /web-query
 {"user_id": "user123", "query": "waterproof jacket for skiing"}
 ```
 
@@ -112,3 +101,12 @@ POST /web-query
 }
 ```
 
+## Sample Image
+![product_query_bot](app_screenshot.png)
+
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/yourusername/product-query-bot.git
+cd product-query-bot
+```
