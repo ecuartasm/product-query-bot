@@ -31,6 +31,39 @@ A Product Query Bot built with RAG (Retrieval-Augmented Generation) pipeline and
 
 ## 🚀 Quick Start with Docker
 
+## How to use:
+
+### Clone the repository
+
+```bash
+  git clone https://github.com/yourusername/product-query-bot.git
+  cd product-query-bot
+```
+
+### To install requirements
+- pip install -r requirements.txt
+
+### To install dev-requirements (for testing)
+- pip install -r requirements-dev.txt
+
+### To run the app:
+- python app.py
+
+### Run all tests
+- python -m pytest test/ -v
+
+### Run with coverage
+- python -m pytest test/ --cov=app -v
+
+### To build the Docker:
+- docker build -t product-query-bot .
+
+### To run the docker:
+- docker-compose up
+
+### Enjoy!
+
+
 ## Sample Image
 ![product_query_bot](app_screenshot.png)
 
