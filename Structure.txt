@@ -1,0 +1,14 @@
+AI assignment/FINAL/
+├── app.py                          Main application
+├── .env                           Environment variables
+├── requirements.txt               Dependencies
+├── test/                          Test folder (your choice)
+│   ├── conftest.py               pytest configuration file
+│   ├── test_vector_db.py         Working tests
+│   └── test_api.py               API tests
+├── data/
+│   └── db_20_items.json           Product data
+├── vector_db/                      Persistent embeddings
+├── templates/                      Web interface
+├── .venv/                          Virtual environment
+└── product_query_bot_log.txt       Application logs

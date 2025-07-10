@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Query Bot</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; padding: 20px;
+        }
+        .container {
+            max-width: 800px; margin: 0 auto; background: white;
+            border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 30px; text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header p { font-size: 1.1em; opacity: 0.9; }
+        .db-info {
+            background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px;
+            margin-top: 15px; font-size: 0.9em;
+        }
+        .chat-container { padding: 30px; min-height: 400px; }
+        .query-form { margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
+        input[type="text"], textarea {
+            width: 100%; padding: 15px; border: 2px solid #e1e5e9;
+            border-radius: 10px; font-size: 16px; transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus, textarea:focus { outline: none; border-color: #667eea; }
+        textarea { resize: vertical; min-height: 100px; }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 15px 30px; border: none; border-radius: 10px;
+            font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s ease; width: 100%;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-secondary {
+            background: #6c757d; margin-top: 10px; padding: 10px 20px; font-size: 14px;
+        }
+        .response-container {
+            margin-top: 30px; padding: 25px; background: #f8f9fa;
+            border-radius: 10px; border-left: 4px solid #667eea;
+        }
+        .confidence { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .confidence.high { background: #d4edda; color: #155724; }
+        .confidence.medium { background: #fff3cd; color: #856404; }
+        .confidence.low { background: #f8d7da; color: #721c24; }
+        .answer { font-size: 16px; line-height: 1.6; margin-bottom: 20px; color: #333; }
+        .sources { margin-top: 20px; }
+        .sources h4 { margin-bottom: 10px; color: #667eea; }
+        .source-item { background: white; padding: 10px 15px; margin-bottom: 8px; border-radius: 8px; border-left: 3px solid #667eea; }
+        .source-name { font-weight: 600; color: #333; }
+        .source-relevance { font-size: 14px; color: #666; }
+        .timestamp { font-size: 12px; color: #666; text-align: right; margin-top: 15px; }
+        .loading { display: none; text-align: center; padding: 20px; }
+        .spinner {
+            border: 4px solid #f3f3f3; border-top: 4px solid #667eea; border-radius: 50%;
+            width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 10px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin-top: 20px; }
+        .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Product Query Bot</h1>
+            <p>Ask me anything about our products!</p>
+            <div class="db-info" id="dbInfo">
+                💾 Loading database information...
+            </div>
+        </div>
+        <div class="chat-container">
+            <form class="query-form" id="queryForm">
+                <div class="form-group">
+                    <label for="user_id">Your Name (optional):</label>
+                    <input type="text" id="user_id" name="user_id" placeholder="Enter your name or leave blank">
+                </div>
+                <div class="form-group">
+                    <label for="query">Your Question:</label>
+                    <textarea id="query" name="query" placeholder="Ask about waterproof jackets, shoes, furniture..." required></textarea>
+                </div>
+                <button type="submit" class="btn">Ask Question 🚀</button>
+                <button type="button" class="btn btn-secondary" onclick="refreshDbInfo()">Refresh DB Info 🔄</button>
+            </form>
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Processing your question...</p>
+            </div>
+            <div id="response-area"></div>
+        </div>
+    </div>
+    <script>
+        window.onload = function() { refreshDbInfo(); };
+        
+        async function refreshDbInfo() {
+            try {
+                const response = await fetch('/db-info');
+                const data = await response.json();
+                const dbInfo = document.getElementById('dbInfo');
+                
+                if (data.status === 'initialized') {
+                    dbInfo.innerHTML = `💾 Vector DB: ${data.count} docs | ${data.database_size_mb} MB | Top-K: ${data.config.top_k} | 📁 ${data.persist_directory}`;
+                } else {
+                    dbInfo.innerHTML = `💾 Database Status: ${data.status}`;
+                }
+            } catch (error) {
+                document.getElementById('dbInfo').innerHTML = '💾 Database info unavailable';
+            }
+        }
+        
+        document.getElementById('queryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const userIdInput = document.getElementById('user_id');
+            const queryInput = document.getElementById('query');
+            const loading = document.getElementById('loading');
+            const responseArea = document.getElementById('response-area');
+            const userId = userIdInput.value.trim() || 'anonymous_' + Math.random().toString(36).substr(2, 9);
+            const query = queryInput.value.trim();
+            if (!query) { alert('Please enter a question!'); return; }
+            loading.style.display = 'block';
+            responseArea.innerHTML = '';
+            try {
+                const response = await fetch('/web-query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `user_id=${encodeURIComponent(userId)}&query=${encodeURIComponent(query)}`
+                });
+                const data = await response.json();
+                loading.style.display = 'none';
+                if (data.success) {
+                    const result = data.result;
+                    const timestamp = new Date(result.timestamp).toLocaleString();
+                    let sourcesHtml = '';
+                    if (result.sources && result.sources.length > 0) {
+                        sourcesHtml = `<div class="sources"><h4>📋 Sources (${result.sources.length} products found):</h4>
+                        ${result.sources.map((source, index) => `<div class="source-item">
+                        <div class="source-name">${index + 1}. ${source.name}</div>
+                        <div class="source-relevance">Relevance: ${(source.relevance * 100).toFixed(1)}%</div></div>`).join('')}</div>`;
+                    }
+                    responseArea.innerHTML = `<div class="response-container">
+                    <div class="response-header"><h3>💬 Response for ${result.user_id}</h3>
+                    <span class="confidence ${result.confidence}">${result.confidence}</span></div>
+                    <div class="answer">${result.answer}</div>${sourcesHtml}
+                    <div class="timestamp">⏰ ${timestamp}</div></div>`;
+                } else {
+                    responseArea.innerHTML = `<div class="error"><strong>❌ Error:</strong> ${data.error}</div>`;
+                }
+            } catch (error) {
+                loading.style.display = 'none';
+                responseArea.innerHTML = `<div class="error"><strong>❌ Network Error:</strong> Could not connect to the server.</div>`;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+================================================================================
+PRODUCT QUERY BOT - OUTPUT LOG
+================================================================================
+Log file created on: 2025-07-10 04:33:53
+Configuration:
+- Vector DB Directory: /app/vector_db
+- Collection Name: product_collection
+- Embedding Model: sentence-transformers/all-MiniLM-L6-v2
+- Top K: 7
+- Similarity Threshold: 1.2
+================================================================================
+
+[2025-07-10 04:33:53] [INFO] Starting Product Query Bot with persistent vector database...
+[2025-07-10 04:33:53] [INFO] Configuration: TOP_K=7, SIMILARITY_THRESHOLD=1.2
+[2025-07-10 04:33:53] [INFO] Vector database directory: /app/vector_db
+[2025-07-10 04:33:53] [INFO] Using embedding model: sentence-transformers/all-MiniLM-L6-v2
+[2025-07-10 04:33:53] [INFO] Initializing Hugging Face embeddings...
+[2025-07-10 04:34:03] [INFO] Vector database manager initialized!
+[2025-07-10 04:34:03] [INFO] No existing database found. Creating new vector database...
+[2025-07-10 04:34:03] [INFO] Loaded 20 products from /app/data/db_20_items.json
+[2025-07-10 04:34:03] [INFO] Creating new vector database with embeddings...
+[2025-07-10 04:34:06] [INFO] Vector database persisted to disk
+[2025-07-10 04:34:06] [INFO] New vector database created with 20 documents and saved to /app/vector_db
+[2025-07-10 04:34:06] [INFO] Vector database loaded/created successfully!
+[2025-07-10 04:34:06] [INFO] Database info: {'status': 'initialized', 'count': 20, 'persist_directory': '/app/vector_db', 'collection_name': 'product_collection', 'database_size_mb': 16.67, 'exists_on_disk': True, 'config': {'top_k': 7, 'similarity_threshold': 1.2, 'embedding_model': 'sentence-transformers/all-MiniLM-L6-v2'}}
+[2025-07-10 04:34:06] [INFO] Product Query Bot is ready!
+[2025-07-10 04:35:20] [INFO] Found 0 unique products for query: 'hello!'
+
+============================================================
+QUERY INTERACTION
+============================================================
+User ID: web_user_5oo6qkula
+Query: hello!
+Timestamp: 2025-07-10 04:35:20
+
+Response:
+I don't have information about that product in my database.
+
+Confidence: LOW
+
+Sources (0 found):
+============================================================

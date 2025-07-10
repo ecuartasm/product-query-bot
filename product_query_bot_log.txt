@@ -1,0 +1,55 @@
+================================================================================
+PRODUCT QUERY BOT - OUTPUT LOG
+================================================================================
+Log file created on: 2025-07-09 22:25:03
+Configuration:
+- Vector DB Directory: ./vector_db
+- Collection Name: product_collection
+- Embedding Model: sentence-transformers/all-MiniLM-L6-v2
+- Top K: 7
+- Similarity Threshold: 1.2
+================================================================================
+
+[2025-07-09 22:25:03] [INFO] Starting Product Query Bot with persistent vector database...
+[2025-07-09 22:25:03] [INFO] Configuration: TOP_K=7, SIMILARITY_THRESHOLD=1.2
+[2025-07-09 22:25:03] [INFO] Vector database directory: ./vector_db
+[2025-07-09 22:25:03] [INFO] Using embedding model: sentence-transformers/all-MiniLM-L6-v2
+[2025-07-09 22:25:03] [INFO] Initializing Hugging Face embeddings...
+[2025-07-09 22:25:15] [INFO] Vector database manager initialized!
+[2025-07-09 22:25:15] [INFO] No existing database found. Creating new vector database...
+[2025-07-09 22:25:15] [INFO] Loaded 20 products from data/db_20_items.json
+[2025-07-09 22:25:15] [INFO] Creating new vector database with embeddings...
+[2025-07-09 22:25:16] [INFO] Vector database persisted to disk
+[2025-07-09 22:25:16] [INFO] New vector database created with 20 documents and saved to ./vector_db
+[2025-07-09 22:25:16] [INFO] Vector database loaded/created successfully!
+[2025-07-09 22:25:16] [INFO] Database info: {'status': 'initialized', 'count': 20, 'persist_directory': './vector_db', 'collection_name': 'product_collection', 'database_size_mb': 16.67, 'exists_on_disk': True, 'config': {'top_k': 7, 'similarity_threshold': 1.2, 'embedding_model': 'sentence-transformers/all-MiniLM-L6-v2'}}
+[2025-07-09 22:25:16] [INFO] Product Query Bot is ready!
+[2025-07-09 22:26:22] [INFO] Found 1 unique products for query: 'can you suggest me a nice shirt for men?'
+
+============================================================
+QUERY INTERACTION
+============================================================
+User ID: Ernesto Cuartas
+Query: can you suggest me a nice shirt for men?
+Timestamp: 2025-07-09 22:26:22
+
+Response:
+Based on our product catalog: Product: Men's Maine Explorer Zip-Front Jac-Shirt Description: This classic wool jac-shirt is a unique combination of a jacket and a shirt, so you can wear it all year round. It fits loosely, perfect for layering when it's cold outside but can also be worn as an outer shirt when it's warm.
+
+Confidence: MEDIUM
+
+Sources (1 found):
+  1. ID: 13 | Name: Men's Maine Explorer Zip-Front Jac-Shirt | Relevance: 46.0%
+============================================================
+[2025-07-09 22:38:37] [INFO] Starting Product Query Bot with persistent vector database...
+[2025-07-09 22:38:37] [INFO] Configuration: TOP_K=7, SIMILARITY_THRESHOLD=1.2
+[2025-07-09 22:38:37] [INFO] Vector database directory: ./vector_db
+[2025-07-09 22:38:37] [INFO] Using embedding model: sentence-transformers/all-MiniLM-L6-v2
+[2025-07-09 22:38:37] [INFO] Initializing Hugging Face embeddings...
+[2025-07-09 22:38:44] [INFO] Vector database manager initialized!
+[2025-07-09 22:38:44] [INFO] Existing vector database found. Attempting to load...
+[2025-07-09 22:38:44] [INFO] Loading existing vector database from disk...
+[2025-07-09 22:38:44] [INFO] Successfully loaded existing vector database with 20 documents
+[2025-07-09 22:38:44] [INFO] Vector database loaded/created successfully!
+[2025-07-09 22:38:44] [INFO] Database info: {'status': 'initialized', 'count': 20, 'persist_directory': './vector_db', 'collection_name': 'product_collection', 'database_size_mb': 16.67, 'exists_on_disk': True, 'config': {'top_k': 7, 'similarity_threshold': 1.2, 'embedding_model': 'sentence-transformers/all-MiniLM-L6-v2'}}
+[2025-07-09 22:38:44] [INFO] Product Query Bot is ready!
