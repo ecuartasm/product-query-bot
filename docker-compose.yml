@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  product-query-bot:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: product-query-bot
+    ports:
+      # Map host port 8000 to container port 8000
+      - "8000:8000"
+    volumes:
+      # Mount data directory (read-only)
+      - ./data:/app/data:ro
+      # Mount vector database (persistent) - FIXED SYNTAX
+      - vector_db_data:/app/vector_db
+      # Mount logs directory
+      - ./logs:/app/logs
+    environment:
+      # IMPORTANT: Must use 0.0.0.0 in container for Docker networking
+      - HOST=0.0.0.0
+      - PORT=8000
+      
+      # Vector Database Configuration
+      - VECTOR_DB_PERSIST_DIR=/app/vector_db
+      - COLLECTION_NAME=product_collection
+      - EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+      
+      # Search Configuration  
+      - TOP_K=7
+      - SIMILARITY_THRESHOLD=1.2
+      - MAX_CONTEXT_LENGTH=2000
+      
+      # File Paths
+      - DATA_FILE_PATH=/app/data/db_20_items.json
+      - LOG_FILE=/app/logs/product_query_bot_log.txt
+      
+      # Answer Generation
+      - MAX_ANSWER_SENTENCES=3
+      - MIN_SENTENCE_LENGTH=20
+    
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    
+    # Resource limits (optional but recommended for Windows)
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+
+# Named volumes for persistent data - FIXED SYNTAX
+volumes:
+  vector_db_data:
+    driver: local
